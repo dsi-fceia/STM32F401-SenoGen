@@ -4,7 +4,7 @@
   * @author  Gustavo Muro
   * @version V0.0.1
   * @date    30/05/2015
-  * @brief   Filtrado de audio.
+  * @brief   Guardado de audio en archivo wav.
   ******************************************************************************
   * @attention
   *
