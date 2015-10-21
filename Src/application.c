@@ -184,7 +184,10 @@ extern void application_task(void)
 				waveformat.SampleRate = SINE_GEN_AUDIO_SAMPLE_RATE;
 				waveformat.FileSize = SINE_GEN_AUDIO_SAMPLE_RATE * SINE_GEN_DURATION * \
 															sizeof(int16_t) + sizeof(WAVE_FormatTypeDef);
-				waveformat.NbrChannels = CHANNEL_MONO;
+				waveformat.NbrChannels = WAVE_CHANNEL_MONO;
+				waveformat.ByteRate = SINE_GEN_AUDIO_SAMPLE_RATE * WAVE_CHANNEL_MONO * sizeof(int16_t);
+			  waveformat.BitPerSample = __REV16(WAVE_16_BIT_PER_SAMPLE);
+				waveformat.SubChunk2Size = SINE_GEN_AUDIO_SAMPLE_RATE * SINE_GEN_DURATION * sizeof(int16_t);
       
 				WaveRecord(&FileWrite, waveformat, getDataSineCB);
 				f_close(&FileWrite);

@@ -59,6 +59,13 @@ void WaveRecord(FIL *FileWrite, WAVE_FormatTypeDef waveformat,
   UINT byteswritten;
   int16_t sample;
   
+	waveformat.ChunkID=__REV(CHUNK_ID);
+	waveformat.FileFormat=__REV(FILE_FORMAT);
+	waveformat.SubChunk1ID=__REV(FORMAT_ID);
+	waveformat.SubChunk1Size=__REV(WAVE_FORMAT_DATA_LENGTH);
+	waveformat.AudioFormat = __REV16(WAVE_FORMAT_PCM);
+	waveformat.SubChunk2ID=__REV(DATA_ID);
+	
   f_write(FileWrite, &waveformat, sizeof(waveformat), &byteswritten);
   
   AudioRemSize = waveformat.FileSize - sizeof(WAVE_FormatTypeDef);

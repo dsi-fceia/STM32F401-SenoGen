@@ -55,7 +55,6 @@ typedef struct
   uint16_t   AudioFormat;   /* 20 */ 
   uint16_t   NbrChannels;   /* 22 */   
   uint32_t   SampleRate;    /* 24 */
-  
   uint32_t   ByteRate;      /* 28 */
   uint16_t   BlockAlign;    /* 32 */  
   uint16_t   BitPerSample;  /* 34 */  
@@ -64,7 +63,17 @@ typedef struct
 
 }WAVE_FormatTypeDef;
 
-/* Exported constants --------------------------------------------------------*/                                                                                    
+/* Exported constants --------------------------------------------------------*/       
+
+#define  CHUNK_ID                            0x52494646  /* 'RIFF' */
+#define  FILE_FORMAT                         0x57415645  /* 'WAVE' */
+#define  FORMAT_ID                           0x666D7420  /* 'fmt ' */
+#define  DATA_ID                             0x64617461  /* 'data' */
+#define  WAVE_FORMAT_DATA_LENGTH						 0x10000000  /* 16 bytes */
+#define  WAVE_FORMAT_PCM 										 0x0100
+#define  WAVE_CHANNEL_MONO 									 1
+#define  WAVE_16_BIT_PER_SAMPLE							 0x1000
+
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
