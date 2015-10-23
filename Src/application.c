@@ -71,7 +71,7 @@ typedef enum
 /* Private variables ---------------------------------------------------------*/
 static FATFS USBDISKFatFs;           /* File system object for USB disk logical drive */
 static char USBDISKPath[4];          /* USB Host logical drive path */
-static appState_enum appState = APPSTATE_IDLE;
+static appState_enum appState = APPSTATE_GEN_SINE;
 static uint8_t usbConnected = 0;
 
 /* Variable used by FatFs*/
@@ -154,7 +154,6 @@ extern void application_task(void)
                             sizeof(int16_t) + sizeof(WAVE_FormatTypeDef);
       waveformat.NbrChannels = CHANNEL_MONO;
       WavePlayerStart(waveformat, getDataSineCB, 70);
-			appState = APPSTATE_MOUNT_FS;
 			break;
     
     case APPSTATE_MOUNT_FS:
