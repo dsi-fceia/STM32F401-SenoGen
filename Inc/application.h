@@ -46,10 +46,10 @@
 /* Exported constants --------------------------------------------------------*/                                                                                    
 /* Exported macro ------------------------------------------------------------*/
 /* \brief nombre del archivo de audio sin extensión */
-#define WAVE_NAME 							"sine"
+#define WAVE_NAME               "sine"
 
 /* \brief nombre del archivo de audio con extensión y path (no modificar)*/
-#define WAVE_NAME_COMPLETO 			"0:"WAVE_NAME".wav"
+#define WAVE_NAME_COMPLETO       "0:"WAVE_NAME".wav"
 
 /* Exported functions ------------------------------------------------------- */
 

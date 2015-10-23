@@ -59,7 +59,7 @@ typedef int32_t (*WaveRecord_getDataCB_type)(int16_t *pBuff, int32_t length);
 /* Exported functions ------------------------------------------------------- */
 /**
   * @brief  Iniciar almacenamiento de audio
-	* @param  FileWrite: puntero al handler del archivo donde guardar los datos
+  * @param  FileWrite: puntero al handler del archivo donde guardar los datos
   * @param  waveformat: Estructura con información de formato de audio
   * @param  getDataCB: Puntero a funcion para obtener muestras de audio
   * @retval none

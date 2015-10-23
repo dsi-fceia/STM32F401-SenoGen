@@ -43,7 +43,7 @@ typedef enum
 
 /* Private define ------------------------------------------------------------*/
 
-#define AUDIO_BUFFER_STEREO_LENGTH				2048
+#define AUDIO_BUFFER_STEREO_LENGTH        2048
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -63,13 +63,13 @@ FIL FileRead;
 
 static void convertToStereo(int16_t *src, int16_t *dest, int32_t lengthSrc)
 {
-	int32_t i;
-	
-	for (i = lengthSrc-1 ; i >= 0 ; i--)
-	{
-		dest[i*2] = src[i];
-		dest[i*2+1] = src[i];
-	}
+  int32_t i;
+  
+  for (i = lengthSrc-1 ; i >= 0 ; i--)
+  {
+    dest[i*2] = src[i];
+    dest[i*2+1] = src[i];
+  }
 }
 
 /* Exported functions ------------------------------------------------------- */
@@ -147,12 +147,12 @@ void WavePlayerStart(WAVE_FormatTypeDef waveformat,
   BSP_AUDIO_OUT_Play((uint16_t*)&Audio_BufferStereo[0], sizeof(Audio_BufferStereo));
   LEDsState = LED6_TOGGLE;
   
-	/* Toggling LED6 to signal Play */
-	LEDsState = LED6_TOGGLE;
-	
+  /* Toggling LED6 to signal Play */
+  LEDsState = LED6_TOGGLE;
+  
   /* Resume playing Wave */
-	BSP_AUDIO_OUT_Resume();
-	
+  BSP_AUDIO_OUT_Resume();
+  
   if (CHANNEL_MONO == waveformat.NbrChannels)
   {
     length = AUDIO_BUFFER_STEREO_LENGTH/4;
@@ -204,7 +204,7 @@ void WavePlayerStart(WAVE_FormatTypeDef waveformat,
   
   LEDsState = LEDS_OFF;
   
-	BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
+  BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
 }
 
 /**

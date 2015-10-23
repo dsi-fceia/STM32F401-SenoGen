@@ -52,10 +52,10 @@
 typedef enum
 {
   APPSTATE_IDLE = 0,
-	APPSTATE_GEN_SINE,
+  APPSTATE_GEN_SINE,
   APPSTATE_MOUNT_FS,
   APPSTATE_UMOUNT_FS,
-	APPSTATE_WRITE,
+  APPSTATE_WRITE,
   APPSTATE_PLAY,
 }appState_enum;
 
@@ -107,8 +107,8 @@ int32_t getDataSineCB(int16_t *pBuff, int32_t length)
   static int8_t count = 0;
   int32_t ret = length * 2;
   
-	TickTock_Start();
-	
+  TickTock_Start();
+  
   while (length)
   {
     *pBuff = sine_500hz_FS8khz[count];
@@ -121,8 +121,8 @@ int32_t getDataSineCB(int16_t *pBuff, int32_t length)
     length--;
   }
   
-	TickTock_Stop();
-	
+  TickTock_Stop();
+  
   return ret;
 }
 
@@ -136,7 +136,7 @@ extern void application_init(void)
   {
     Error_Handler();
   }
-	
+  
   TickTock_Init();
 }
 
@@ -148,19 +148,19 @@ extern void application_task(void)
   switch (appState)
   {
     case APPSTATE_IDLE:
-			if (usbConnected)
-			{
-				appState = APPSTATE_MOUNT_FS;
+      if (usbConnected)
+      {
+        appState = APPSTATE_MOUNT_FS;
       }
-			break;
-		
-		case APPSTATE_GEN_SINE:
-			waveformat.SampleRate = SINE_GEN_AUDIO_SAMPLE_RATE;
+      break;
+    
+    case APPSTATE_GEN_SINE:
+      waveformat.SampleRate = SINE_GEN_AUDIO_SAMPLE_RATE;
       waveformat.FileSize = SINE_GEN_AUDIO_SAMPLE_RATE * SINE_GEN_DURATION * \
                             sizeof(int16_t) + sizeof(WAVE_FormatTypeDef);
       waveformat.NbrChannels = CHANNEL_MONO;
       WavePlayerStart(waveformat, getDataSineCB, 70);
-			break;
+      break;
     
     case APPSTATE_MOUNT_FS:
       if (f_mount(&USBDISKFatFs, (TCHAR const*)USBDISKPath, 0 ) != FR_OK ) 
@@ -179,26 +179,26 @@ extern void application_task(void)
       appState = APPSTATE_IDLE;
       break;
     
-		case APPSTATE_WRITE:
-			if (f_open(&FileWrite, WAVE_NAME_COMPLETO, FA_CREATE_ALWAYS | FA_WRITE) != FR_OK)
-			{
-				Error_Handler();
-			}
-			else
-			{
-				waveformat.SampleRate = SINE_GEN_AUDIO_SAMPLE_RATE;
-				waveformat.FileSize = SINE_GEN_AUDIO_SAMPLE_RATE * SINE_GEN_DURATION * \
-															sizeof(int16_t) + sizeof(WAVE_FormatTypeDef);
-				waveformat.NbrChannels = WAVE_CHANNEL_MONO;
-				waveformat.ByteRate = SINE_GEN_AUDIO_SAMPLE_RATE * WAVE_CHANNEL_MONO * sizeof(int16_t);
-			  waveformat.BitPerSample = __REV16(WAVE_16_BIT_PER_SAMPLE);
-				waveformat.SubChunk2Size = SINE_GEN_AUDIO_SAMPLE_RATE * SINE_GEN_DURATION * sizeof(int16_t);
+    case APPSTATE_WRITE:
+      if (f_open(&FileWrite, WAVE_NAME_COMPLETO, FA_CREATE_ALWAYS | FA_WRITE) != FR_OK)
+      {
+        Error_Handler();
+      }
+      else
+      {
+        waveformat.SampleRate = SINE_GEN_AUDIO_SAMPLE_RATE;
+        waveformat.FileSize = SINE_GEN_AUDIO_SAMPLE_RATE * SINE_GEN_DURATION * \
+                              sizeof(int16_t) + sizeof(WAVE_FormatTypeDef);
+        waveformat.NbrChannels = WAVE_CHANNEL_MONO;
+        waveformat.ByteRate = SINE_GEN_AUDIO_SAMPLE_RATE * WAVE_CHANNEL_MONO * sizeof(int16_t);
+        waveformat.BitPerSample = __REV16(WAVE_16_BIT_PER_SAMPLE);
+        waveformat.SubChunk2Size = SINE_GEN_AUDIO_SAMPLE_RATE * SINE_GEN_DURATION * sizeof(int16_t);
       
-				WaveRecord(&FileWrite, waveformat, getDataSineCB);
-				f_close(&FileWrite);
-				appState = APPSTATE_PLAY;
-			}
-			break;
+        WaveRecord(&FileWrite, waveformat, getDataSineCB);
+        f_close(&FileWrite);
+        appState = APPSTATE_PLAY;
+      }
+      break;
 
     case APPSTATE_PLAY:
       if (f_open(&FileRead, WAVE_NAME_COMPLETO, FA_READ) != FR_OK)
@@ -222,11 +222,11 @@ extern void application_task(void)
 
 extern void application_conect(void)
 {
-	usbConnected = 1;
+  usbConnected = 1;
 }
 extern void application_disconect(void)
 {
-	usbConnected = 0;
+  usbConnected = 0;
 }
 
 /* End of file ---------------------------------------------------------------*/
