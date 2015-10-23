@@ -46,6 +46,7 @@
 #include "ff_gen_drv.h"
 #include "usbh_diskio.h"
 #include "main.h"
+#include "utils.h"
 
 /* Private typedef -----------------------------------------------------------*/
 typedef enum
@@ -106,9 +107,10 @@ int32_t getDataSineCB(int16_t *pBuff, int32_t length)
   static int8_t count = 0;
   int32_t ret = length * 2;
   
+	TickTock_Start();
+	
   while (length)
   {
-    
     *pBuff = sine_500hz_FS8khz[count];
     count++;
     if (SINE_GEN_500HZ_LENGTH <= count)
@@ -119,6 +121,8 @@ int32_t getDataSineCB(int16_t *pBuff, int32_t length)
     length--;
   }
   
+	TickTock_Stop();
+	
   return ret;
 }
 
@@ -132,6 +136,8 @@ extern void application_init(void)
   {
     Error_Handler();
   }
+	
+  TickTock_Init();
 }
 
 extern void application_task(void)
