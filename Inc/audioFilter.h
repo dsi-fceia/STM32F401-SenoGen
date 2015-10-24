@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    application.h 
+  * @file    audioFilter.h 
   * @author  Gustavo Muro
   * @version V0.0.1
   * @date    30/05/2015
@@ -38,26 +38,45 @@
   */ 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#ifndef AUDIO_FILTER_H
+#define AUDIO_FILTER_H
 
 /* Includes ------------------------------------------------------------------*/ 
+#include "arm_math.h"
+
 /* Exported types ------------------------------------------------------------*/
+typedef enum
+{
+  AUDIO_FILTER_FILTER_SEL_LOW_PASS = 0,
+  AUDIO_FILTER_FILTER_SEL_HIGH_PASS,
+  AUDIO_FILTER_TOTAL_FILTERS,
+}audioFilter_filterSel_enum;
+
 /* Exported constants --------------------------------------------------------*/                                                                                    
 /* Exported macro ------------------------------------------------------------*/
-/* \brief nombre del archivo de audio sin extensión */
-#define WAVE_NAME               "audioOut50-1000"
 
-/* \brief nombre del archivo de audio con extensión y path (no modificar)*/
-#define WAVE_NAME_COMPLETO       "0:"WAVE_NAME".wav"
+#define AUDIO_FILTER_LP_44100_9600_12000_16_STEREO
 
 /* Exported functions ------------------------------------------------------- */
 
-extern void application_init(void);
-extern void application_task(void);
-extern void application_conect(void);
-extern void application_disconect(void);
+/**
+  * @brief  inicializa filtrado de audio con el filtro seleccionado y el formato
+						de audio indicado.
+  * @retval None
+  */
+extern void audioFilter_init(void);
 
-#endif /* APPLICATION_H */
+/**
+  * @brief  Filtra muestras de audio.
+  * @param  src: puntero al las muestas de audio a filtrar
+  * @param  dest: puntero a donde dejar las muestras filtradas
+  * @param  length: cantidad de muestras
+  * @retval None
+  */
+extern void audioFilter_filter(q15_t *src, q15_t *dest, uint32_t length);
+
+extern void audioFilter_filterSel(audioFilter_filterSel_enum sel);
+
+#endif /* AUDIO_FILTER_H */
 
 /* End of file ---------------------------------------------------------------*/

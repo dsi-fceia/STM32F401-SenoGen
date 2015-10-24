@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file    application.h 
+  * @file    audioFilter.c 
   * @author  Gustavo Muro
   * @version V0.0.1
   * @date    30/05/2015
-  * @brief   header Filtrado de audio.
+  * @brief   Filtrado de audio.
   ******************************************************************************
   * @attention
   *
@@ -37,27 +37,64 @@
   ******************************************************************************
   */ 
 
-/* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef APPLICATION_H
-#define APPLICATION_H
+/* Includes ------------------------------------------------------------------*/
+#include "audioFilter.h"
+#include "arm_math.h"
+#include "filters.h"
 
-/* Includes ------------------------------------------------------------------*/ 
-/* Exported types ------------------------------------------------------------*/
-/* Exported constants --------------------------------------------------------*/                                                                                    
-/* Exported macro ------------------------------------------------------------*/
-/* \brief nombre del archivo de audio sin extensión */
-#define WAVE_NAME               "audioOut50-1000"
+/* Private typedef -----------------------------------------------------------*/
+typedef struct
+{
+  const q15_t *pCoeff;
+  int32_t length;
+}dataFilter_type;
 
-/* \brief nombre del archivo de audio con extensión y path (no modificar)*/
-#define WAVE_NAME_COMPLETO       "0:"WAVE_NAME".wav"
+/* Private define ------------------------------------------------------------*/
+#define BLOCK_SIZE            1
 
+/* Private variables ---------------------------------------------------------*/
+static q15_t firStateI16[BLOCK_SIZE + FILTER_MAX_LENGHT];
+static arm_fir_instance_q15 firInstance;
+static const dataFilter_type dataFilters[AUDIO_FILTER_TOTAL_FILTERS] =
+{
+  {
+    lp16000_50_1000,
+    LP_FS16000_50_1000_LENGTH,
+  },
+  {
+    hp16000_1000_50,
+    HP_FS16000_1000_50_LENGTH,
+  },
+};
+
+/* Private function prototypes -----------------------------------------------*/
+/* Private functions ---------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
+extern void audioFilter_init(void)
+{
+	audioFilter_filterSel(AUDIO_FILTER_FILTER_SEL_LOW_PASS);
+}
 
-extern void application_init(void);
-extern void application_task(void);
-extern void application_conect(void);
-extern void application_disconect(void);
+extern void audioFilter_filter(q15_t *src, q15_t *dest, uint32_t length)
+{
+	uint32_t i;
+	
+	for (i = 0 ; i < length ; i++)
+	{
+    arm_fir_q15(&firInstance, &src[i], &dest[i], BLOCK_SIZE);
+	}
+}
 
-#endif /* APPLICATION_H */
+extern void audioFilter_filterSel(audioFilter_filterSel_enum sel)
+{
+	/* inicializa la estructura del filtro. */
+  arm_fir_init_q15(&firInstance, 
+		dataFilters[sel].length,
+		(q15_t*)dataFilters[sel].pCoeff,
+		(q15_t*)&firStateI16, 
+		BLOCK_SIZE);
+}
+
+
 
 /* End of file ---------------------------------------------------------------*/

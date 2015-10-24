@@ -47,6 +47,7 @@
 #include "usbh_diskio.h"
 #include "main.h"
 #include "utils.h"
+#include "audioFilter.h"
 
 /* Private typedef -----------------------------------------------------------*/
 typedef enum
@@ -72,7 +73,8 @@ typedef enum
 /* Private variables ---------------------------------------------------------*/
 static FATFS USBDISKFatFs;           /* File system object for USB disk logical drive */
 static char USBDISKPath[4];          /* USB Host logical drive path */
-static appState_enum appState = APPSTATE_GEN_SINE;
+static appState_enum appState = APPSTATE_IDLE;
+static audioFilter_filterSel_enum filterSel = AUDIO_FILTER_FILTER_SEL_LOW_PASS;
 static uint8_t usbConnected = 0;
 
 /* Variable used by FatFs*/
@@ -98,6 +100,8 @@ int32_t getDataCB(int16_t *pBuff, int32_t length)
   UINT bytesread = 0;
   
   f_read(&FileRead, pBuff, length*sizeof(int16_t), (void *)&bytesread); 
+  
+  audioFilter_filter(pBuff, pBuff, length);
   
   return bytesread;
 }
@@ -138,6 +142,8 @@ extern void application_init(void)
   }
   
   TickTock_Init();
+  
+  audioFilter_init();
 }
 
 extern void application_task(void)
@@ -170,7 +176,7 @@ extern void application_task(void)
       }
       else
       {
-        appState = APPSTATE_WRITE;
+        appState = APPSTATE_PLAY;
       }
       break;
     
@@ -211,6 +217,14 @@ extern void application_task(void)
         f_read (&FileRead, &waveformat, sizeof(waveformat), &bytesread);
         WavePlayerStart(waveformat, getDataCB, 70);
         f_close(&FileRead);
+        
+        /* selecciona siguiente filtro */
+        filterSel++;
+        if (AUDIO_FILTER_TOTAL_FILTERS <= filterSel)
+        {
+          filterSel = AUDIO_FILTER_FILTER_SEL_LOW_PASS;
+        }
+        audioFilter_filterSel(filterSel);
       }
       break;
     
