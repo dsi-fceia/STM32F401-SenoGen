@@ -4,7 +4,7 @@
   * @author  Gustavo Muro
   * @version V0.0.1
   * @date    30/05/2015
-  * @brief   Archivo de aplicación.
+  * @brief   Archivo de aplicaciÃ³n.
   ******************************************************************************
   * @attention
   *
@@ -81,7 +81,7 @@ static FIL FileWrite;
 
 static const int16_t sine_1khz_FS8khz[SINE_GEN_1KHZ_LENGTH] =
 {
-  0, 23169, 32767, 23169, 0, -23169, 32767, -23169
+  0, 23169, 32767, 23169, 0, -23169, -32767, -23169
 };
 
 static const int16_t sine_500hz_FS8khz[SINE_GEN_500HZ_LENGTH] =
